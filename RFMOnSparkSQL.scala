@@ -58,3 +58,50 @@ object RFMOnSparkSQL {
         sc.stop()
   }
 }
+/*
+j@j-hblt:~$ su 
+密码： 
+root@j-hblt:/home/j# clear
+
+root@j-hblt:/home/j# $HADOOP_HOME/sbin/start-dfs.sh 
+16/06/11 06:28:51 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Starting namenodes on [j-hblt]
+j-hblt: starting namenode, logging to /opt/hadoop/hadoop-2.6.4/logs/hadoop-root-namenode-j-hblt.out
+localhost: starting datanode, logging to /opt/hadoop/hadoop-2.6.4/logs/hadoop-root-datanode-j-hblt.out
+Starting secondary namenodes [j-hblt]
+j-hblt: starting secondarynamenode, logging to /opt/hadoop/hadoop-2.6.4/logs/hadoop-root-secondarynamenode-j-hblt.out
+16/06/11 06:29:17 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+
+root@j-hblt:/home/j# $SPARK_HOME/sbin/start-all.sh 
+starting org.apache.spark.deploy.master.Master, logging to /opt/spark/spark-1.6.1-bin-hadoop2.6/logs/spark-root-org.apache.spark.deploy.master.Master-1-j-hblt.out
+localhost: starting org.apache.spark.deploy.worker.Worker, logging to /opt/spark/spark-1.6.1-bin-hadoop2.6/logs/spark-root-org.apache.spark.deploy.worker.Worker-1-j-hblt.out
+root@j-hblt:/home/j# jps
+2865 Launcher
+2833 NailgunRunner
+3623 Master
+2362 Main
+3260 DataNode
+3485 SecondaryNameNode
+3133 NameNode
+3823 Jps
+3727 Worker
+
+root@j-hblt:/home/j# $SPARK_HOME/bin/spark-submit --class com.spark.app.RFMOnSparkSQL /home/j/文档/FirstSparkApp/out/artifacts/rfmonsparksql/rfmonsparksql.jar
+
++----+-----+-----+-----+                                                          
+|cuid|flagr|flagf|flagm|
++----+-----+-----+-----+
+|1631|    0|    0|    1|
+|1831|    0|    0|    1|
+|1231|    0|    0|    1|
+|1431|    1|    0|    1|
+|1031|    0|    0|    1|
+|1632|    0|    0|    1|
+|1432|    1|    0|    1|
+|1832|    0|    0|    1|
+|1232|    1|    0|    1|
+|1032|    1|    0|    1|
++----+-----+-----+-----+
+
+
+
