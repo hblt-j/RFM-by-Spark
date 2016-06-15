@@ -1,0 +1,69 @@
+sudo apt-get update  
+sudo apt-get install docker.io 
+# su
+
+#docker run -i -t ubuntu /bin/bash
+ FATA[0000] Gethttp:///var/run/docker.sock/v1.17/images/search?term=ubuntu: dial unix/var/run/docker.sock: no such file or directory. Are you trying to connect to aTLS-enabled daemon without TLS?
+#exit 
+     
+sudo docker -v  
+  
+sudo apt-get remove docker  
+  
+sudo apt-get remove --auto-remove docker  
+  
+sudo apt-get remove --purge lxc-docker  
+  
+sudo apt-get autoremove --purge 
+$ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9  
+$ sudo bash -c "echo deb https://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list"  
+sudo apt-get update  
+sudo apt-get install lxc-docker  
+  
+sudo docker -v  
+
+root@j-hblt:/home/j# docker daemon
+
+INFO[0000] Listening for HTTP on unix (/var/run/docker.sock) 
+INFO[0000] [graphdriver] using prior storage driver "aufs" 
+INFO[0000] Option DefaultDriver: bridge                 
+INFO[0000] Option DefaultNetwork: bridge                
+WARN[0000] Running modprobe bridge nf_nat br_netfilter failed with    message: modprobe: WARNING: Module br_netfilter not found. , error: exit status 1 
+INFO[0000] Firewalld running: false                     
+WARN[0000] Your kernel does not support cgroup memory limit: mountpoint for memory not found 
+WARN[0000] mountpoint for cpu not found                 
+FATA[0000] Error starting daemon: Devices cgroup isn't mounted 
+
+解决方法：
+
+    Log into Ubuntu as a user with sudo privileges.
+    Edit the /etc/default/grub file.
+
+    Set the GRUB_CMDLINE_LINUX value as follows:
+
+    GRUB_CMDLINE_LINUX="cgroup_enable=memory
+     swapaccount=1"
+
+    Save and close the file.
+
+    Update GRUB.
+
+    $
+     sudo update-grub
+
+    Reboot your system.
+
+
+root@j-hblt:/home/j# docker run -it ubuntu /bin/bash
+root@989f771a13cf:/# ifconfig
+bash: ifconfig: command not found
+root@989f771a13cf:/# exit 
+exit
+root@j-hblt:/home/j# docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+ubuntu              latest              594b6e305389        2 weeks ago         122 MB
+root@j-hblt:/home/j# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+eb86b95746a2        ubuntu              "/bin/bash"         About an hour ago   Created                                 sick_jones
+root@j-hblt:/home/j# 
+#############docker install ok###############
