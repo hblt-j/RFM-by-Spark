@@ -41,15 +41,13 @@ FATA[0000] Error starting daemon: Devices cgroup isn't mounted
 
     Set the GRUB_CMDLINE_LINUX value as follows:
 
-    GRUB_CMDLINE_LINUX="cgroup_enable=memory
-     swapaccount=1"
+    GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"
 
     Save and close the file.
 
     Update GRUB.
 
-    $
-     sudo update-grub
+    $sudo update-grub
 
     Reboot your system.
 
@@ -67,3 +65,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 eb86b95746a2        ubuntu              "/bin/bash"         About an hour ago   Created                                 sick_jones
 root@j-hblt:/home/j# 
 #############docker install ok###############
+root@j-hblt:/home/j/文档/spark1.6src/docker#./build
+These images are intended to be run like so:
+docker run -v $SPARK_HOME:/opt/spark spark-test-master
+docker run -v $SPARK_HOME:/opt/spark spark-test-worker spark://<master_ip>:7077
