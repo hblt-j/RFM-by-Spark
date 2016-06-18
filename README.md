@@ -1,2 +1,2 @@
-# RFM-for-Spark
-RFM for spark scala,sparkR,sparkPy,sparkSQL
+# RFM-by-Spark
+RFM by spark scala,sparkR,sparkPy,sparkSQL
