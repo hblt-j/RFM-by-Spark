@@ -1,0 +1,199 @@
+# conf e.g.
+## /etc/profile:
+
+export JAVA_HOME=/opt/java/java-8
+
+export JRE_HOME=$JAVA_HOME/jre
+
+export HADOOP_HOME=/opt/hadoop/hadoop-2.6.4
+
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+
+export HADOOP_PREFIX=$HADOOP_HOME
+
+export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop
+
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+
+export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"
+
+export SCALA_HOME=/opt/scala/scala
+
+export M2_HOME=/opt/maven/maven
+
+export SPARK_HOME=/opt/spark/spark-1.6.1-bin-hadoop2.6
+
+export PATH=$PATH:$JRE_HOME/bin:$JAVA_HOME/bin:$SCALA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$SPARK_HOME/bin:$SPARK_HOME/sbin:$M2_HOME/bin
+
+export CLASSPATH=.:$JAVA_HOME/lib:$JAE_HOME/lib
+
+##  core-site.xml :
+<configuration>
+<property>
+  <name>fs.defaultFS</name>
+  <value>hdfs://j-hblt:9000</value>
+</property>
+<property>
+  <name>hadoop.tmp.dir</name>
+  <value>/opt/hadoop/hadoop-2.6.4/tmp</value>
+</property>
+<property>
+  <name>hadoop.native.lib</name>
+  <value>true</value>
+</property>
+</configuration>
+
+## hdfs-site.xml:
+<configuration>
+<property>
+ <name>dfs.replication</name>
+ <value>2</value>
+ <description>Default block replication.
+  The actual number of replications can be specified when the file is created.
+  The default is used if replication is not specified in create time.
+ </description>
+</property>
+<property>
+   <name>dfs.namenode.secondary.http-address</name>
+   <value>j-hblt:50090</value>
+</property>
+<property>
+   <name>dfs.namenode.checkpoint.dir</name>
+   <value>file:///opt/hadoop/hdfs/namesecondary</value>
+</property> 
+
+<property>
+ <name>dfs.namenode.name.dir</name>
+ <value>/opt/hadoop/hdfs/namenode</value>
+ <description>Determines where on the local filesystem the DFS name node should store the name table(fsimage). If this is a comma-delimited list of directories then the name table
+is replicated in all of the directories, for redundancy.
+ </description>
+</property>
+<property>
+ <name>dfs.datanode.data.dir</name>
+ <value>/opt/hadoop/hdfs/datanode</value>
+ <description>Determines where on the local filesystem an DFS data node should store its blocks. If this is a comma-delimited list of directories, then data will be stored in all n
+amed directories, typically on different devices. Directories that do not exist are ignored.
+ </description>
+</property>
+<!-- Not sure if it works -->
+<!--<property>
+        <name>dfs.datanode.use.datanode.hostname</name>
+        <value>false</value>
+    </property>
+   
+    <property>
+        <name>dfs.namenode.datanode.registration.ip-hostname-check</name>
+        <value>false</value>
+    </property> 
+    -->
+</configuration>
+
+## mapred-site.xml :
+<configuration>
+<property>
+ <name>mapreduce.jobtracker.address</name>
+ <value>j-hblt:54311</value>
+</property>
+<property>
+ <name>mapreduce.framework.name</name>
+ <value>yarn</value>
+</property>
+</configuration>
+
+## slaves :
+localhost
+#work1
+#work2
+#work3
+
+## yarn-site.xml :
+<?xml version="1.0"?>
+<configuration>
+<property>
+ <name>yarn.resourcemanager.hostname</name>
+ <value>j-hblt</value>
+</property>
+<property>
+ <name>yarn.nodemanager.aux-services</name>
+ <value>mapreduce_shuffle</value>
+</property>
+
+<!-- Site specific YARN configuration properties -->
+<!--<property>
+ <name>yarn.nodemanager.aux-services</name>
+ <value>mapreduce_shuffle</value>
+</property>
+<property>
+ <name>yarn.resourcemanager.scheduler.address</name>
+ <value>HOSTNAME:8030</value>
+</property>
+<property>
+ <name>yarn.resourcemanager.address</name>
+ <value>HOSTNAME:8032</value>
+</property>
+<property>
+  <name>yarn.resourcemanager.webapp.address</name>
+  <value>HOSTNAME:8088</value>
+</property>
+<property>
+  <name>yarn.resourcemanager.resource-tracker.address</name>
+  <value>HOSTNAME:8031</value>
+</property>
+<property>
+  <name>yarn.resourcemanager.admin.address</name>
+  <value>HOSTNAME:8033</value>
+</property>
+-->
+</configuration>
+
+## spark-defaults.conf:
+#
+# Example:
+# spark.master                     spark://master:7077
+# spark.eventLog.enabled           true
+# spark.eventLog.dir               hdfs://namenode:8021/directory
+# spark.serializer                 org.apache.spark.serializer.KryoSerializer
+# spark.driver.memory              5g
+# spark.executor.extraJavaOptions  -XX:+PrintGCDetails -Dkey=value -Dnumbers="one two three"
+
+# spark.master                     spark://j-hblt:7077
+ spark.eventLog.enabled           true
+ spark.eventLog.dir               hdfs://j-hblt:9000/historyserverforspark
+ spark.serializer                 org.apache.spark.serializer.KryoSerializer
+ spark.driver.memory              512m
+spark.exector.extraJavaOptions  -XX:+PrintGCDetails -Dkey=value -Dnumbers="one two three"
+spark.yarn.historyServer.address  j-hblt:18080
+spark.history.fs.logDirectory     hdfs://j-hblt:9000/histoyserverforspark
+spark.default.parallelism         10
+
+## spark-env.sh:
+export JAVA_HOME=/opt/java/java-8
+export SCALA_HOME=/opt/scala/scala
+export HADOOP_HOME=/opt/hadoop/hadoop-2.6.4
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export SPARK_MASTER_IP=192.168.1.110
+export SPARK_MASTER_PORT=7077
+export MASTER=spark://${SPARK_MASTER_IP}:${SPARK_MASTER_PORT}
+export SPARK_WORKER_MEMORY=512m
+export SPARK_EXECUTOR_MEMORY=512m
+export SPARK_DRIVER_MEMORY=512m
+export SPARK_WORKER_CORES=1
+export SPARK_WORKER_INSTANCES=1
+export SPARK_LOCAL_IP=192.168.1.110
+
+##  hadoop-env.sh :
+
+# The java implementation to use.
+export JAVA_HOME=/opt/java/java-8
+
+# The jsvc implementation to use. Jsvc is required to run secure datanodes
+# that bind to privileged ports to provide authentication of data transfer
+# protocol.  Jsvc is not required if SASL is configured for authentication of
+# data transfer protocol using non-privileged ports.
+#export JSVC_HOME=${JSVC_HOME}
+export HADOOP_HOME=/opt/hadoop/hadoop-2.6.4
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"
+
+export HADOOP_CONF_DIR=${HADOOP_CONF_DIR:-"/etc/hadoop"}
